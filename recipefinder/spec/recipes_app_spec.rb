@@ -1,5 +1,5 @@
 require 'capybara/poltergeist'
-require 'rails_helper'
+require 'spec_helper'
 Capybara.default_driver = :poltergeist
 
 Capybara.app_host = "http://localhost:3000"
