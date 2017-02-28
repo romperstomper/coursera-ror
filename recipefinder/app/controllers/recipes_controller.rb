@@ -1,7 +1,7 @@
 class RecipesController < ApplicationController
   def index
-    unless params[:search]
-      params[:search] = :chocolate
+    @search = params[:search] || :chocolate
+    @visit = Recipes.for(search) 
     end
   end
 end
