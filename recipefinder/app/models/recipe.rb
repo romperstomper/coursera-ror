@@ -10,7 +10,7 @@ require 'pp'
 
 class Recipe 
   include HTTParty
-  base_uri = 'http://www.food2fork.com/api'
+  base_uri 'http://www.food2fork.com/api'
   def self.for(search)
     get("http://www.food2fork.com/api/search?key=6ce007e21bbdb178ff7f6217aaadeb97&q=#{search}")
   end
