@@ -11,9 +11,9 @@ require 'pp'
 class Recipe 
   include HTTParty
   base_uri = 'http://www.food2fork.com/api'
-  def self.for
-    get('/search', query: { 'key' => '6ce007e21bbdb178ff7f6217aaadeb97' })
+  def self.for(search)
+    get("http://www.food2fork.com/api/search?key=6ce007e21bbdb178ff7f6217aaadeb97&q=#{search}")
   end
 end
 
-pp Recipe.for
+pp Recipe.for 'foo'
