@@ -1,19 +1,18 @@
 require 'httparty'
-require 'pp'
 
 #'6ce007e21bbdb178ff7f6217aaadeb97'
 #url = "#{hostport}/api/search?key=#{key_value}&q=#{keyword}"
-##< ActiveRecord::Base
 #default_params key: key_value
 #format :json
 #hostport = 'www.food2fork.com'
 
-class Recipe 
+class Recipe < ActiveRecord::Base
   include HTTParty
-  base_uri = 'http://www.food2fork.com/api'
+  hostport = ENV['FOOD2FORK_SERVER_AND_PORT'] || 'www.food2fork.com'
+  base_uri "http://#{hostport}/api"
+  default_params key: ENV['FOOD2FORK_KEY']
+  format :json
   def self.for(search)
-    get("http://www.food2fork.com/api/search?key=6ce007e21bbdb178ff7f6217aaadeb97&q=#{search}")
+    get("/search", query: { q: search})["recipes"]
   end
 end
-
-pp Recipe.for 'foo'

@@ -1,6 +1,6 @@
 class RecipesController < ApplicationController
   def index
     @search = params[:search] || :chocolate
-    @visit = Recipe.for(@search) 
+    @recipes = Recipe.for(@search) 
   end
 end
