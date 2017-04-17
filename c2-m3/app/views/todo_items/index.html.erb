@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Todo Items</h1>
+<p>Number of Completed Todos: <%= @number_of_completed_todos %></p>
 
 <table>
   <thead>
@@ -14,6 +15,7 @@
   </thead>
 
   <tbody>
+<br>
     <% @todo_items.each do |todo_item| %>
       <tr>
         <td><%= todo_item.description %></td>
@@ -28,5 +30,4 @@
 </table>
 
 <br>
-
 <%= link_to 'New Todo item', new_todo_item_path %>
