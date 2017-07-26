@@ -54,8 +54,8 @@ class Solution
   #
   # Lecture 2: $project
   #
-
   def racer_names
+    @coll.find.aggregate([{:$project => {:_id => 0, :first_name => 1, :last_name => 1}}])
     #place solution here
   end
 
