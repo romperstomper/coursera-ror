@@ -75,6 +75,9 @@ class Solution
   #
 
   def group_times
+    @coll.find.aggregate([
+    {:$group=>{:_id=>{
+      :age =>"$group", :gender => "$gender"}, :runners => {:$sum => 1}, :fastest_time => {:$min => "$secs"}}}])
     #place solution here
   end
 
