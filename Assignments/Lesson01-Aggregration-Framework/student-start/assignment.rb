@@ -82,10 +82,18 @@ class Solution
   end
 
   def group_last_names
+    @coll.find.aggregate([
+    {:$group=>{:_id=>{
+      :age =>"$group", :gender => "$gender"}, :runners => {:$sum => 1}, :last_names => {:$push => "$last_name"}}}])
+    #place solution here
     #place solution here
   end
 
   def group_last_names_set
+    @coll.find.aggregate([
+    {:$group=>{:_id=>{
+      :age =>"$group", :gender => "$gender"}, :runners => {:$sum => 1}, :last_names => {:$addToSet => "$last_name"}}}])
+    #place solution here
     #place solution here
   end
 
