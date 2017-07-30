@@ -101,6 +101,11 @@ class Solution
   # Lecture 4: $match
   #
   def groups_faster_than criteria_time
+    @coll.find.aggregate([
+    {:$match => {:fastest_time => criteria_time}}, {:$group=>{:_id=>{
+     :age =>"$group", :gender => "$gender"}, :runners => {:$sum => 1},
+     :fastest_time => {:$min => "$secs"}}}])
+    #place solution here
     #place solution here
   end
 
