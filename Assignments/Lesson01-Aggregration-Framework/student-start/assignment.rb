@@ -111,6 +111,10 @@ class Solution
 
   def age_groups_faster_than age_group, criteria_time
     #place solution here
+    @coll.find.aggregate([
+    {:$match => {:fastest_time => criteria_time}}, {:$group=>{:_id=>{
+     :age =>"$group"}, :runners => {:$sum => 1},
+     :fastest_time => {:$min => "$secs"}}}])
   end
 
 
@@ -118,7 +122,12 @@ class Solution
   # Lecture 5: $unwind
   #
   def avg_family_time last_name
-    #place solution here
+    @coll.find.aggregate([
+      {:$match => {:last_name => "$last_name"}}, 
+      {:$group=>{:_id => "$last_name", 
+      :avg_time => {:$avg => "$secs"},
+      :numbers => {:$push => "$number"}}}
+    ])
   end
   
   def number_goal last_name
