@@ -126,11 +126,18 @@ class Solution
       {:$match => {:last_name => "$last_name"}}, 
       {:$group=>{:_id => "$last_name", 
       :avg_time => {:$avg => "$secs"},
-      :numbers => {:$push => "$number"}}}
-    ])
+      :numbers => {:$push => "$number"}}}])
   end
   
   def number_goal last_name
+    @coll.find.aggregate([
+      {:$match => {:last_name => "$last_name"}}, 
+      {:$group=>{:_id => "$last_name", 
+      :avg_time => {:$avg => "$secs"},
+      :numbers => {:$push => "$number"}}},
+      {:$unwind => "$numbers"},
+      {:$project => {:_id => 0, :last_name => 1, 
+      :number => 1, :avg_time => 1}}])
     #place solution here
   end
 
