@@ -7,6 +7,9 @@ class Place
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
   end
+  def self.find_by_short_name(q)
+    self.collection.find("address_components.short_name" => q)
+  end
   def self.mongo_client
     Mongoid::Clients.default
   end
