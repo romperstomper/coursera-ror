@@ -7,6 +7,11 @@ class Place
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
   end
+  def self.find(s)
+    bid = BSON::ObjectId.from_string(s)
+    h = self.collection.find(:_id => bid).first
+    Place.new(h)
+  end
   def self.to_places(mcv)
     res = []
     mcv.each do |m|
