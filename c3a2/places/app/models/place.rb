@@ -7,6 +7,11 @@ class Place
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
   end
+  def self.all(offset=0, limit=0)
+    p = self.collection.find.skip(offset).limit(limit)
+    self.to_places(p.to_a)
+  end
+
   def self.find(s)
     bid = BSON::ObjectId.from_string(s)
     h = self.collection.find(:_id => bid).first
