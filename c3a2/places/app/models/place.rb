@@ -2,10 +2,15 @@ class Place
   include Mongoid::Document
   attr_accessor :id, :formatted_address, :location, :address_components
   def initialize(h)
-    @id = h[:_id].to_s
+    @id = h[:_id].nil? ? h[:_id] : h[:_id].to_s
     @address_components = h[:address_components].collect { |a| AddressComponent.new(a) }
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
+  end
+  def destroy
+    bid = BSON::ObjectId.from_string(@id)
+    #puts bid.class
+    Place.collection.delete_one(:_id => bid)
   end
   def self.all(offset=0, limit=0)
     p = self.collection.find.skip(offset).limit(limit)
@@ -15,7 +20,7 @@ class Place
   def self.find(s)
     bid = BSON::ObjectId.from_string(s)
     h = self.collection.find(:_id => bid).first
-    Place.new(h)
+    return h.nil? ? nil : Place.new(h)
   end
   def self.to_places(mcv)
     res = []
