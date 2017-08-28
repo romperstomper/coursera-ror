@@ -7,6 +7,13 @@ class Place
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
   end
+  def self.get_address_components(sort=nil, offset=nil, limit=nil)
+    prototype = [ {:$unwind=>"$address_components"}, {:$project=>{:_id => 1, :address_components => 1, :formatted_address => 1, "geometry.geolocation" => 1}}]
+    prototype << {:$sort => sort} if sort
+    prototype << {:$skip => offset} if offset
+    prototype << {:$limit => limit} if limit
+    collection.find.aggregate(prototype)
+  end
   def destroy
     bid = BSON::ObjectId.from_string(@id)
     #puts bid.class
