@@ -7,6 +7,13 @@ class Place
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
   end
+  def self.get_country_names
+    collection.find.aggregate([
+        {:$project=>{:_id => 0, "address_components.long_name" => 1, "address_components.types" => 1}}, {:$unwind=>"$address_components"},
+        {:$match => {"address_components.types" => "country"}},
+        {:$group => {:_id => "$address_components.long_name"}}]).to_a.map {|h| h[:_id]}
+  end
+
   def self.get_address_components(sort=nil, offset=nil, limit=nil)
     prototype = [ {:$unwind=>"$address_components"}, {:$project=>{:_id => 1, :address_components => 1, :formatted_address => 1, "geometry.geolocation" => 1}}]
     prototype << {:$sort => sort} if sort
