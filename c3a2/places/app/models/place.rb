@@ -7,6 +7,12 @@ class Place
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
   end
+  def self.create_indexes
+    collection.indexes.create_one({"geometry.geolocation" => Mongo::Index::GEO2DSPHERE})
+  end
+  def self.remove_indexes
+    collection.indexes.drop_one("geometry.geolocation_2dsphere")
+  end
   def self.find_ids_by_country_code(code)
     collection.find.aggregate([
         {:$match => {"address_components.short_name" => code}}, {:$project=>{:_id => 1}}]).to_a.map {|h| h[:_id].to_s}
