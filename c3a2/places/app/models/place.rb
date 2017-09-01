@@ -7,6 +7,11 @@ class Place
     @formatted_address = h[:formatted_address]
     @location = Point.new(h[:geometry][:location])
   end
+  def self.near(point, max_meters=nil)
+    query = {:"geometry.geolocation" => {:$near => {:$geometry => point.to_hash}}}
+    query[:"geometry.geolocation"][:$near][:$maxDistance] = max_meters if max_meters
+    collection.find(query)
+  end
   def self.create_indexes
     collection.indexes.create_one({"geometry.geolocation" => Mongo::Index::GEO2DSPHERE})
   end
