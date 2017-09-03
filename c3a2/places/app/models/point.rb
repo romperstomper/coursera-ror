@@ -1,17 +1,20 @@
 class Point
-  include Mongoid::Document
-  attr_accessor :latitude, :longitude
+  attr_accessor :longitude, :latitude
 
-  def initialize(h)
-    if h[:lat]
-      @latitude = h[:lat]
-      @longitude = h[:lng]
+  def initialize(hash)
+    if !hash[:coordinates].nil?
+      @longitude = hash[:coordinates][0]
+      @latitude = hash[:coordinates][1]
     else
-      @latitude = h[:coordinates][1]
-      @longitude = h[:coordinates][0]
+      @longitude = hash[:lng]
+      @latitude = hash[:lat]
     end
   end
+
   def to_hash
-    {type: "Point", coordinates: [@longitude, @latitude]}
+    {
+      "type": "Point",
+      "coordinates": [@longitude, @latitude]
+    }
   end
 end
